@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard - Smart Attendance</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <link rel="stylesheet" href="CSS/student_dashboard.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <header class="header">
+            <div class="logo"><i class="fas fa-graduation-cap"></i><span>Smart Attendance</span></div>
+            <div class="user-menu">
+                <div class="user-avatar" id="userAvatar">JS</div>
+                <div class="dropdown-menu" id="userDropdown">
+                    <div class="dropdown-header"><h4>John Smith</h4><p>student@college.edu</p><span class="pill">Student</span></div>
+                    <ul class="dropdown-list">
+                        <li><a href="#"><i class="fas fa-user-circle"></i> Profile</a></li>
+                        <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
+                        <li><a href="#"><i class="fas fa-sign-out-alt"></i> Log out</a></li>
+                    </ul>
+                </div>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="dashboard-header"><h1>Welcome back, John Smith!</h1><p>Track your attendance and manage your schedule</p></div>
+            <div class="stats-grid">
+                <div class="card stat-card"><div><div class="stat-card-header"><p>Overall Attendance</p><i class="fas fa-chart-line"></i></div><h3>82%</h3><div class="progress-bar-container"><div class="progress-bar" style="width: 82%;"></div></div><p class="subtext">37 of 45 classes attended</p></div></div>
+                <div class="card stat-card"><div><div class="stat-card-header"><p>Today's Classes</p><i class="fas fa-calendar-day"></i></div><h3>3</h3><p class="subtext">1 attended, 1 active</p></div></div>
+                <div class="card stat-card"><div><div class="stat-card-header"><p>Current Status</p><div class="status-icon"><i class="fas fa-check"></i></div></div><h3>In Class</h3><p class="subtext">Algorithm Analysis - Room 4A</p></div></div>
+            </div>
+
+            <section class="card">
+                <div class="section-header" style="align-items: center;"><h2 style="display: flex; align-items: center; gap: 0.75rem;"><div style="width: 12px; height: 12px; background-color: var(--color-green-dark); border-radius: 50%;"></div>Active Class - Mark Attendance</h2></div>
+                <div class="active-class-marker">
+                    <h3 id="marker-header">Algorithm Analysis <span class="pill active">ACTIVE</span></h3>
+                    <p id="marker-subheader" class="text-gray" style="font-size: 0.9rem;">Prof. Michael Davis • Room 4A • 11:00 - 12:30</p>
+                    
+                    <div id="state-initial" class="visible">
+                        <i class="fas fa-fingerprint marker-icon"></i>
+                        <h4 class="marker-title">Ready to mark attendance</h4>
+                        <p class="marker-subtitle">Click below to start the verification process</p>
+                        <button class="btn btn-primary" id="startCheckBtn">Start Attendance Check</button>
+                    </div>
+
+                    <div id="state-location-scan" style="display: none;">
+                        <h4 class="marker-title" style="margin-bottom: 2rem;">Verifying requirements...</h4>
+                        <ul class="verification-steps">
+                            <li class="verification-step" id="wifi-check">
+                                <i class="fas fa-wifi step-icon"></i>
+                                <span class="step-text" id="wifi-text">Checking Campus Wi-Fi...</span>
+                                <div class="status-indicator">
+                                    <div class="loader loader-small"></div>
+                                    <i class="fas fa-check-circle success-icon"></i>
+                                </div>
+                            </li>
+                            <li class="verification-step" id="bluetooth-check">
+                                <i class="fab fa-bluetooth-b step-icon"></i>
+                                <span class="step-text" id="bluetooth-text">Scanning for Classroom Beacon...</span>
+                                <div class="status-indicator">
+                                    <div class="loader loader-small"></div>
+                                    <i class="fas fa-check-circle success-icon"></i>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div id="state-face-verification" style="display: none;">
+                        <i class="fas fa-camera marker-icon"></i>
+                        <h4 class="marker-title">Identity verification</h4>
+                        <p class="marker-subtitle">We need to verify your identity using facial recognition</p>
+                        <button class="btn btn-primary" id="startFaceVerificationBtn">Start Face Verification</button>
+                    </div>
+
+                    <div id="state-face-scanning" style="display: none;">
+                        <div class="camera-preview-container">
+                            <video id="faceCamera" autoplay playsinline></video>
+                            <div class="face-overlay">
+                                <div class="face-guide"></div>
+                            </div>
+                        </div>
+                        <p class="marker-subtitle">Please position your face in the center</p>
+                        <button class="btn btn-primary" id="captureFaceBtn">Capture & Verify</button>
+                    </div>
+                    
+                    <div id="state-processing" style="display: none;">
+                        <div class="loader" style="margin-bottom: 1.5rem;"></div>
+                        <h4 class="marker-title">Processing...</h4>
+                        <p class="marker-subtitle">Verifying your identity using facial recognition</p>
+                    </div>
+
+                    <div id="state-success" style="display: none;">
+                        <i class="fas fa-check-circle marker-icon success"></i>
+                        <h4 class="marker-title">Attendance Marked!</h4>
+                        <p class="marker-subtitle">Your attendance has been successfully recorded</p>
+                        <button class="btn btn-secondary" id="markAnotherBtn">Mark Another Class</button>
+                    </div>
+
+                    <div id="state-face-failed" style="display: none;">
+                        <i class="fas fa-times-circle marker-icon error"></i>
+                        <h4 class="marker-title">Face Verification Failed</h4>
+                        <p class="marker-subtitle" id="face-error-message">Could not verify your identity. Please try again.</p>
+                        <button class="btn btn-primary" id="retryFaceBtn">Try Again</button>
+                        <button class="btn btn-secondary" id="cancelFaceBtn">Cancel</button>
+                    </div>
+                </div>
+            </section>
+
+            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; margin-top: 2rem;">
+                <section>
+                    <div class="section-header"><h2>Today's Schedule</h2><p class="text-light">Thursday, August 28, 2025</p></div>
+                    <div class="schedule-list">
+                        <div class="schedule-item"><div class="icon"><i class="fas fa-clock"></i></div><div class="schedule-details"><h4>Data Structures <span class="pill finished">FINISHED</span></h4><p>09:00 - 10:30 • Dr. Sarah Johnson • Room 3B</p></div><div class="schedule-status"><span class="pill attended"><i class="fas fa-check"></i> Attended</span></div></div>
+                        <div class="schedule-item" id="algo-schedule-item"><div class="icon"><i class="fas fa-clock"></i></div><div class="schedule-details"><h4>Algorithm Analysis <span class="pill active">ACTIVE</span></h4><p>11:00 - 12:30 • Prof. Michael Davis • Room 4A</p></div><div class="schedule-status" id="algo-status"></div></div>
+                        <div class="schedule-item"><div class="icon"><i class="fas fa-clock"></i></div><div class="schedule-details"><h4>Database Systems <span class="pill upcoming">UPCOMING</span></h4><p>14:00 - 15:30 • Dr. Sarah Johnson • Room 5C</p></div></div>
+                    </div>
+                </section>
+                <section>
+                    <div class="section-header"><h2>Course-wise Attendance</h2></div>
+                    <div class="card course-breakdown-list">
+                        <div class="course-item"><div class="course-details-main"><h4>Data Structures</h4><div class="progress-bar-container"><div class="progress-bar" style="width: 85%;"></div></div></div><div class="course-stats">13/15 classes (85%)</div></div>
+                        <div class="course-item"><div class="course-details-main"><h4>Algorithm Analysis</h4><div class="progress-bar-container"><div class="progress-bar" style="width: 78%;"></div></div></div><div class="course-stats">11/14 classes (78%)</div></div>
+                        <div class="course-item"><div class="course-details-main"><h4>Database Systems</h4><div class="progress-bar-container"><div class="progress-bar" style="width: 83%;"></div></div></div><div class="course-stats">13/16 classes (83%)</div></div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Camera Modal for Face Verification -->
+    <div class="modal-overlay" id="cameraModal" style="display: none;">
+        <div class="modal-content">
+            <h2 style="margin-bottom: 0.5rem;">Face Verification</h2>
+            <p class="text-gray" style="margin-bottom: 1.5rem;">Position your face in the center and click capture</p>
+            <div class="camera-container">
+                <video id="cameraVideo" autoplay playsinline></video>
+                <div class="face-guide-overlay">
+                    <div class="face-guide-circle"></div>
+                </div>
+            </div>
+            <div class="modal-buttons">
+                <button class="btn btn-secondary" id="cancelCameraBtn">Cancel</button>
+                <button class="btn btn-primary" id="captureBtn">Capture Photo</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Debug Button (can be removed in production) -->
+    <button onclick="window.pywebview.api.debug_bluetooth().then(console.log).catch(console.error)" 
+            style="position: fixed; top: 10px; right: 10px; z-index: 1000; padding: 10px; background: #ff9900; color: white; border: none; border-radius: 5px; cursor: pointer;">
+        Test Bluetooth Scan
+    </button>
+
+    <div class="toast" id="toast-notification">Location verified!</div>
+
+    <script src="Js/student_dashboard.js"></script>
+</body>
+</html>

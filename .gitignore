@@ -1,0 +1,12 @@
+.env
+serviceAccountKey.json
+__pycache__/
+*.pyc
+build/
+dist/
+*.spec
+.venv/
+attendance_system.egg-info/
+.idea/
+.vscode/
+*.log

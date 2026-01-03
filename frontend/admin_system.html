@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Settings - Smart Attendance</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="CSS/admin_system.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <span>Smart Attendance</span>
+            </div>
+            <div class="user-info">
+                <span id="adminName">Admin User</span>
+                <div class="user-avatar" id="adminAvatar">AU</div>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="dashboard-header">
+                <h1>System Settings</h1>
+                <p>Manage global settings for administrators, teachers, and students</p>
+            </div>
+
+            <div class="tabs-nav">
+                <button class="tab-link active" onclick="showTab('admin-settings')"><i class="fas fa-user-shield"></i> Admin</button>
+                <button class="tab-link" onclick="showTab('teacher-settings')"><i class="fas fa-chalkboard-teacher"></i> Teacher</button>
+                <button class="tab-link" onclick="showTab('student-settings')"><i class="fas fa-user-graduate"></i> Student</button>
+            </div>
+
+            <div id="admin-settings" class="tab-content active">
+                <div class="card">
+                    <h2>Admin Account Settings</h2>
+                    <form id="admin-details-form">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="admin-email">Email Address</label>
+                                <input type="email" id="admin-email" value="admin@college.edu">
+                            </div>
+                            <div class="form-group">
+                                <label for="admin-phone">Phone Number</label>
+                                <input type="tel" id="admin-phone" value="+1234567890">
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save Changes</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="card">
+                    <h2>Change Password</h2>
+                    <form id="admin-password-form">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="admin-new-password">New Password</label>
+                                <input type="password" id="admin-new-password" placeholder="Enter new password">
+                            </div>
+                            <div class="form-group">
+                                <label for="admin-confirm-password">Confirm New Password</label>
+                                <input type="password" id="admin-confirm-password" placeholder="Confirm new password">
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary"><i class="fas fa-key"></i> Update Password</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div id="teacher-settings" class="tab-content">
+                <div class="card">
+                    <h2>Manage Teacher</h2>
+                    <div class="form-group">
+                        <label for="teacher-search">Find Teacher (by Name, Email, or Teacher ID)</label>
+                        <input type="text" id="teacher-search" placeholder="Search for a teacher...">
+                    </div>
+                    <div id="teacher-details-container" style="display: none;">
+                        <hr>
+                        <h3>Teacher Details</h3>
+                        <form id="teacher-update-form">
+                            <div class="form-grid">
+                                <div class="form-group"><label>Name</label><input type="text" id="teacher-name"></div>
+                                <div class="form-group"><label>Email</label><input type="email" id="teacher-email"></div>
+                                <div class="form-group"><label>Teacher ID</label><input type="text" id="teacher-id"></div>
+                                <div class="form-group"><label>Bluetooth ID</label><input type="text" id="teacher-bluetooth-id" placeholder="e.g., C8:9F:0C:7F:9B:C8"></div>
+                            </div>
+                            <div class="form-actions space-between">
+                                <button type="button" class="btn btn-danger" id="remove-teacher-btn"><i class="fas fa-user-times"></i> Remove Teacher</button>
+                                <div>
+                                    <button type="button" class="btn btn-outline" id="reset-teacher-password-btn"><i class="fas fa-key"></i> Reset Password</button>
+                                    <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Update Details</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2>Teachers Missing Bluetooth ID</h2>
+                    <div class="list-container" id="no-bluetooth-list">
+                        <div class="list-item">
+                            <span>Prof. Michael Davis (MD101)</span>
+                            <div class="list-item-action">
+                                <input type="text" placeholder="Enter Bluetooth ID">
+                                <button class="btn btn-primary btn-sm">Save</button>
+                            </div>
+                        </div>
+                         <div class="list-item">
+                            <span>Dr. Sarah Johnson (SJ202)</span>
+                            <div class="list-item-action">
+                                <input type="text" placeholder="Enter Bluetooth ID">
+                                <button class="btn btn-primary btn-sm">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="student-settings" class="tab-content">
+                <div class="card">
+                    <h2>Find Students</h2>
+                    <div class="controls-panel">
+                        <div class="form-group">
+                            <label for="student-branch-filter">Branch</label>
+                            <select id="student-branch-filter"><option value="">Select Branch</option></select>
+                        </div>
+                        <div class="form-group">
+                            <label for="student-year-filter">Year</label>
+                            <select id="student-year-filter"><option value="">Select Year</option></select>
+                        </div>
+                        <div class="form-group">
+                            <label for="student-division-filter">Division</label>
+                            <select id="student-division-filter"><option value="">Select Division</option></select>
+                        </div>
+                        <button class="apply-btn" id="find-students-btn">Find Students</button>
+                    </div>
+
+                    <div id="student-list-container" style="display:none;">
+                        <h3>Student List</h3>
+                        <div class="table-wrapper">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Student ID</th>
+                                        <th>Email</th>
+                                        <th>Attendance</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>John Smith</td>
+                                        <td>S2023001</td>
+                                        <td>john.s@college.edu</td>
+                                        <td>82%</td>
+                                        <td><button class="btn btn-primary btn-sm">Manage</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="student-manage-panel" class="card" style="display:none;">
+                    <h2>Manage Student: <span id="managing-student-name">John Smith</span></h2>
+                    
+                    <div class="sub-card">
+                        <h3>Update Details</h3>
+                        <form id="student-update-form">
+                             <div class="form-grid">
+                                <div class="form-group"><label>Phone</label><input type="tel" id="student-phone"></div>
+                                <div class="form-group"><label>Email</label><input type="email" id="student-email"></div>
+                                <div class="form-group"><label>Branch</label><select id="student-branch-update"></select></div>
+                                <div class="form-group"><label>Year</label><select id="student-year-update"></select></div>
+                                <div class="form-group"><label>Division</label><select id="student-division-update"></select></div>
+                            </div>
+                            <div class="form-actions"><button type="submit" class="btn btn-primary">Update Details</button></div>
+                        </form>
+                    </div>
+
+                    <div class="sub-card">
+                        <h3>Block Attendance</h3>
+                        <form id="student-block-form">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="block-until-date">Block Until Date</label>
+                                    <input type="date" id="block-until-date">
+                                </div>
+                                <div class="form-group">
+                                    <label for="block-reason">Reason for Blocking</label>
+                                    <input type="text" id="block-reason" placeholder="e.g., Fee pending, Disciplinary action">
+                                </div>
+                            </div>
+                            <div class="form-actions"><button type="submit" class="btn btn-warning">Block Student</button></div>
+                        </form>
+                    </div>
+                    
+                    <div class="form-actions space-between" style="margin-top: 1rem;">
+                        <button type="button" class="btn btn-danger"><i class="fas fa-user-times"></i> Remove Student</button>
+                        <button type="button" class="btn btn-outline"><i class="fas fa-key"></i> Reset Password</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="Js/admin_system.js"></script>
+</body>
+</html>

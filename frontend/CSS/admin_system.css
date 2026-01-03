@@ -1,0 +1,148 @@
+/* ============================================================
+   SMART ATTENDANCE: ADMIN SYSTEM SETTINGS CSS
+   ============================================================ */
+
+/* --- Import Theme Variables (Same as admin_dashboard.css) --- */
+:root {
+    /* Primary Colors */
+    --primary-color: #4A90E2;
+    --primary-dark: #3A6EA5;
+    --primary-light: #E1EFFE;
+    
+    /* Text Colors */
+    --text-dark: #2c3e50;
+    --text-light: #8FA4B7;
+    --text-gray: #5a6e82;
+    --text-white: #FFFFFF;
+    
+    /* Background Colors */
+    --bg-light: #F7F9FC;
+    --bg-white: #FFFFFF;
+    
+    /* UI Colors */
+    --border-color: #EAEFF4;
+    --shadow-color: rgba(44, 62, 80, 0.1);
+    
+    /* Status Colors */
+    --success-color: #2ecc71;
+    --danger-color: #e74c3c;
+    --warning-color: #f39c12;
+    --warning-dark: #d35400;
+    
+    /* Sizes and Spacing */
+    --border-radius: 12px;
+    --border-radius-sm: 8px;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+    
+    /* Transitions & Shadows */
+    --transition-normal: 0.3s ease;
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* --- General Styling & Reset (Inherited from main styles, but good to have) --- */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-light);
+    color: var(--text-dark);
+    line-height: 1.6;
+}
+h1, h2 { font-weight: 600; }
+h1 { font-size: 2rem; }
+h2 { font-size: 1.5rem; }
+
+/* --- Layout (Re-using from admin_dashboard.css) --- */
+.dashboard-container { display: flex; flex-direction: column; min-height: 100vh; }
+.main-content { padding: var(--spacing-xl); max-width: 1400px; margin: 0 auto; flex: 1; }
+.header { background-color: var(--bg-white); padding: var(--spacing-md) var(--spacing-xl); display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); box-shadow: var(--shadow-md); }
+.logo { display: flex; align-items: center; gap: 0.5rem; font-size: 1.25rem; font-weight: 700; }
+.logo i { color: var(--primary-color); }
+.user-info { display: flex; align-items: center; gap: 0.5rem; }
+.user-avatar { width: 40px; height: 40px; border-radius: 50%; background-color: #9013FE; color: var(--text-white); display: flex; justify-content: center; align-items: center; font-weight: 600; }
+.dashboard-header { margin-bottom: var(--spacing-xl); }
+.dashboard-header p { color: var(--text-gray); font-size: 1.125rem; }
+.card { background-color: var(--bg-white); border-radius: var(--border-radius); box-shadow: var(--shadow-md); padding: var(--spacing-lg); margin-bottom: var(--spacing-lg); }
+.card h2 { margin-bottom: var(--spacing-lg); border-bottom: 1px solid var(--border-color); padding-bottom: var(--spacing-md); }
+
+/* --- Tab Navigation --- */
+.tabs-nav {
+    display: flex;
+    border-bottom: 2px solid var(--border-color);
+    margin-bottom: var(--spacing-lg);
+}
+.tab-link {
+    padding: var(--spacing-md);
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-gray);
+    position: relative;
+    transition: color var(--transition-normal);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.tab-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: var(--primary-color);
+    transform: scaleX(0);
+    transition: transform var(--transition-normal);
+}
+.tab-link:hover { color: var(--primary-dark); }
+.tab-link.active { color: var(--primary-color); }
+.tab-link.active::after { transform: scaleX(1); }
+
+/* --- Tab Content --- */
+.tab-content { display: none; }
+.tab-content.active { display: block; animation: fadeIn 0.5s; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+/* --- Forms --- */
+.form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--spacing-lg); }
+.form-group { margin-bottom: var(--spacing-md); }
+.form-group label { display: block; margin-bottom: 0.5rem; font-weight: 600; font-size: 0.95rem; }
+.form-group input, .form-group select { width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: var(--border-radius-sm); font-size: 1rem; transition: all var(--transition-normal); }
+.form-group input:focus, .form-group select:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2); }
+.form-actions { display: flex; justify-content: flex-end; margin-top: var(--spacing-lg); }
+.form-actions.space-between { justify-content: space-between; }
+
+/* --- Reusable Buttons (from admin_dashboard.css) --- */
+.btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.625rem 1.25rem; border-radius: var(--border-radius-sm); border: none; cursor: pointer; font-weight: 600; transition: all var(--transition-normal); }
+.btn-primary { background-color: var(--primary-color); color: var(--text-white); }
+.btn-primary:hover { background-color: var(--primary-dark); }
+.btn-danger { background-color: var(--danger-color); color: var(--text-white); }
+.btn-danger:hover { background-color: #c0392b; }
+.btn-warning { background-color: var(--warning-color); color: var(--text-white); }
+.btn-warning:hover { background-color: var(--warning-dark); }
+.btn-outline { background-color: transparent; border: 1px solid var(--border-color); color: var(--text-gray); }
+.btn-outline:hover { background-color: var(--bg-light); color: var(--primary-color); }
+.btn-sm { padding: 0.5rem 1rem; font-size: 0.875rem; }
+
+/* --- List Styling (for Teacher & Student Lists) --- */
+.list-container { max-height: 300px; overflow-y: auto; }
+.list-item { display: flex; justify-content: space-between; align-items: center; padding: var(--spacing-md); border-bottom: 1px solid var(--border-color); }
+.list-item:last-child { border-bottom: none; }
+.list-item span { font-weight: 500; }
+.list-item-action { display: flex; align-items: center; gap: 0.5rem; }
+.list-item-action input { width: 200px; }
+
+/* --- Student Management Panels --- */
+.controls-panel { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--spacing-md); align-items: flex-end; background-color: var(--bg-light); padding: var(--spacing-md); border-radius: var(--border-radius-sm); margin-bottom: 1rem;}
+.apply-btn { background-color: var(--primary-color); color: var(--text-white); border: none; padding: 0.75rem; border-radius: var(--border-radius-sm); cursor: pointer; font-weight: 600; }
+.table-wrapper { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; }
+th, td { padding: var(--spacing-md); text-align: left; border-bottom: 1px solid var(--border-color); }
+th { background-color: var(--bg-light); font-weight: 600; }
+.sub-card { border: 1px solid var(--border-color); border-radius: var(--border-radius); padding: var(--spacing-lg); margin-top: var(--spacing-lg); }
+.sub-card h3 { font-size: 1.1rem; margin-bottom: var(--spacing-md); }
+hr { border: 0; height: 1px; background-color: var(--border-color); margin: var(--spacing-lg) 0; }

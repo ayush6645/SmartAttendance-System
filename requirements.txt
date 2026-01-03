@@ -1,0 +1,55 @@
+# ---------------------------------------------------------------------------
+# MANUAL INSTALLATION STEPS (REQUIRED FOR FACE RECOGNITION)
+# ---------------------------------------------------------------------------
+# The 'face-recognition' library depends on 'dlib', which must be compiled
+# from source. You MUST install system-level tools before running pip.
+# Follow these steps in order.
+
+# STEP 1: Install a C++ Compiler
+#   - On Windows: Install "C++ build tools" from the Visual Studio Installer:
+#     https://visualstudio.microsoft.com/visual-cpp-build-tools/
+#   - On macOS: Run 'xcode-select --install' in your terminal.
+#   - On Linux (Debian/Ubuntu): Run 'sudo apt-get install build-essential'
+
+# STEP 2: Install CMake
+#   This is a build tool required by dlib. The easiest way is via pip.
+#   Run this command first:
+#   pip install cmake
+
+# STEP 3: Install dlib
+#   With the compiler and CMake installed, you can now install dlib.
+#   This step can take a long time to compile.
+#   Run this command:
+#   pip install dlib
+
+# After completing the 3 steps above, the 'face-recognition' library below
+# will install correctly when you run 'pip install -r requirements.txt'.
+# ---------------------------------------------------------------------------
+
+
+# --- Python Libraries ---
+
+# -- Flask Web Framework --
+Flask
+Flask-Cors
+
+# -- Common Backend Libraries --
+python-dotenv==1.0.0
+firebase-admin==6.2.0
+
+# -- Geolocation --
+geopy
+
+# -- Image and Face Recognition --
+numpy
+opencv-python
+Pillow
+face-recognition # Requires dlib, see manual steps above
+
+# -- Desktop App UI and Backend communication --
+requests
+pywebview
+
+# -- Testing --
+pytest
+mock

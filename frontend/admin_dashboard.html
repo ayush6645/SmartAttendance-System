@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administrator Dashboard - Smart Attendance</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="CSS/admin_dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <span>Smart Attendance</span>
+            </div>
+            <div class="user-info">
+                <span id="adminName">Loading...</span>
+                <div class="user-avatar" id="adminAvatar">AU</div>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="dashboard-header">
+                <h1>Administrator Dashboard</h1>
+                <p>Manage the attendance system, users, and configurations</p>
+            </div>
+            
+            <!-- Stats will be populated by JavaScript -->
+            <div class="stats-grid" id="statsGrid">
+                <div class="card stat-card loading">
+                    <div class="icon-wrapper purple"><i class="fas fa-users"></i></div>
+                    <div class="stat-info"><h3>Loading...</h3><p>Total Users</p><p style="color: var(--text-gray);">Loading distribution</p></div>
+                </div>
+                <div class="card stat-card loading">
+                    <div class="icon-wrapper blue"><i class="fas fa-book"></i></div>
+                    <div class="stat-info"><h3>Loading...</h3><p>Active Courses</p><p style="color: var(--text-gray);">Across all departments</p></div>
+                </div>
+                <div class="card stat-card loading">
+                    <div class="icon-wrapper green"><i class="fas fa-video"></i></div>
+                    <div class="stat-info"><h3>Loading...</h3><p>Live Classes</p><p style="color: var(--text-gray);">Currently in session</p></div>
+                </div>
+                <div class="card stat-card loading">
+                    <div class="icon-wrapper blue"><i class="fas fa-server"></i></div>
+                    <div class="stat-info"><h3>Loading...</h3><p>System Uptime</p><p style="color: var(--text-gray);">Last 30 days</p></div>
+                    <div class="stat-graph blue"><i class="fas fa-chart-line"></i></div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2>Quick Actions</h2>
+                <p class="text-light" style="margin-bottom: 1.5rem;">Common administrative tasks</p>
+                <div class="quick-actions-grid">
+                    <div class="action-item" onclick="scrollToTimetable()"><i class="fas fa-calendar-alt"></i> Manage Timetable</div>
+                    <div class="action-item" onclick="openAddUserModal()"><i class="fas fa-user-plus"></i> Add New User</div>
+                    <div class="action-item" onclick="window.location.href='admin_system.html'"><i class="fas fa-cog"></i> System Settings</div>
+                    <div class="action-item"><i class="fas fa-chart-pie"></i> View Reports</div>
+                </div>
+            </div>
+            
+            <!-- Timetable Section -->
+            <section class="card timetable-section">
+                <div class="section-header">
+                    <div><h2>Timetable Management</h2><p>View and manage class schedules</p></div>
+                    <div class="action-buttons">
+                        <button class="btn btn-success" onclick="saveTimetable()"><i class="fas fa-save"></i> Save Timetable</button>
+                        <button class="btn btn-danger" onclick="resetTimetable()"><i class="fas fa-trash"></i> Reset</button>
+                    </div>
+                </div>
+                
+                <!-- Selection Panel -->
+                <div class="controls-panel">
+                    <h3>Select Class Details</h3>
+                    <div class="form-group">
+                        <label for="branchFilter">Branch</label>
+                        <select id="branchFilter">
+                            <option value="">Select Branch</option>
+                            <!-- Options will be populated by JavaScript -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="yearFilter">Year</label>
+                        <select id="yearFilter">
+                            <option value="">Select Year</option>
+                            <!-- Options will be populated by JavaScript -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="divisionFilter">Division</label>
+                        <select id="divisionFilter">
+                            <option value="">Select Division</option>
+                            <!-- Options will be populated by JavaScript -->
+                        </select>
+                    </div>
+                    <button class="apply-btn" onclick="loadTimetable()">Apply Filters</button>
+                </div>
+                
+                <!-- Timetable -->
+                <div class="timetable-preview">
+                    <div id="timetableLoading" class="loading-state">
+                        <i class="fas fa-spinner fa-spin"></i> Loading timetable...
+                    </div>
+                    <table class="timetable-table" id="timetableTable" style="display: none;">
+                        <thead>
+                            <tr>
+                                <th>Day / Time</th>
+                                <!-- Time slots will be populated by JavaScript -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Timetable rows will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            
+            <section class="card user-management">
+                <div class="section-header">
+                    <div><h2>User Management</h2><p>Manage students, teachers, and administrators in the system</p></div>
+                    <button class="btn btn-primary" onclick="openAddUserModal()"><i class="fas fa-plus"></i> Add User</button>
+                </div>
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="userSearch" placeholder="Search users..." onkeyup="filterUsers()">
+                </div>
+                <div class="user-table-wrapper">
+                    <div id="usersLoading" class="loading-state">
+                        <i class="fas fa-spinner fa-spin"></i> Loading users...
+                    </div>
+                    <table class="user-table" id="userTable" style="display: none;">
+                        <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Details</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Users will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                    <div id="noUsersMessage" style="display: none; text-align: center; padding: 2rem;">
+                        No users found. <a href="#" onclick="openAddUserModal()">Add your first user</a>.
+                    </div>
+                </div>
+                <div class="pagination" id="userPagination">
+                    <!-- Pagination will be populated by JavaScript -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+<div class="modal-overlay" id="lectureModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <div>
+                <h2>Assign Lecture</h2>
+                <p class="text-light">Fill details to schedule a lecture or add a break.</p>
+            </div>
+            <button class="close-btn" onclick="closeModal('lectureModal')">×</button>
+        </div>
+
+        <form id="lectureForm">
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="classroom">Classroom</label>
+                    <select id="classroom" required>
+                        <option value="">Select Classroom</option>
+                        </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="faculty">Faculty Name</label>
+                    <select id="faculty" required>
+                        <option value="">Select Faculty</option>
+                        </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="subject">Subject</label>
+                    <select id="subject" required>
+                        <option value="">Select Subject</option>
+                        </select>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" id="clearLectureBtn" onclick="clearLecture()">Clear Slot</button>
+                <button type="button" class="btn" id="addBreakBtn" onclick="addBreak()" style="background-color: var(--warning-color); color: white;">Add Break</button>
+                <button type="submit" class="btn btn-primary">Save Lecture</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+    <div class="modal-overlay" id="addUserModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div>
+                    <h2>Add New User</h2>
+                    <p class="text-light">Add a new user to the attendance system.</p>
+                </div>
+                <button class="close-btn" onclick="closeModal('addUserModal')">×</button>
+            </div>
+
+            <form class="modal-form" id="userForm">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="fullName" class="required-field">Full Name</label>
+                        <input type="text" id="fullName" placeholder="Enter full name" required>
+                        <div class="error-message">Please enter your full name</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email" class="required-field">Email</label>
+                        <input type="email" id="email" placeholder="Enter email address" required>
+                        <div class="error-message">Please enter a valid email address</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone" class="required-field">Phone Number</label>
+                        <input type="tel" id="phone" placeholder="Enter phone number" required>
+                        <div class="error-message">Please enter your phone number</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="role" class="required-field">Role</label>
+                        <select id="role" required onchange="toggleRoleFields()">
+                            <option value="">Select Role</option>
+                            <option value="Student">Student</option>
+                            <option value="Teacher">Teacher</option>
+                            <option value="Admin">Admin</option>
+                        </select>
+                        <div class="error-message">Please select a role</div>
+                    </div>
+                    
+                    <!-- Student Fields - Remove inline style -->
+                    <div id="studentFields" class="role-fields">
+                        <div class="form-group">
+                            <label for="studentBranch">Branch</label>
+                            <select id="studentBranch">
+                                <option value="">Select Branch</option>
+                                <!-- Options will be populated by JavaScript -->
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="studentYear">Year</label>
+                            <select id="studentYear">
+                                <option value="">Select Year</option>
+                                <!-- Options will be populated by JavaScript -->
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="studentDivision">Division</label>
+                            <select id="studentDivision">
+                                <option value="">Select Division</option>
+                                <!-- Options will be populated by JavaScript -->
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="studentId">Student ID</label>
+                            <input type="text" id="studentId" placeholder="Enter student ID">
+                        </div>
+                    </div>
+
+                    <!-- Teacher Fields - Remove inline style -->
+                    <div id="teacherFields" class="role-fields">
+                        <div class="form-group">
+                            <label for="teacherId">Teacher ID</label>
+                            <input type="text" id="teacherId" placeholder="Enter teacher ID">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="bluetoothId">Bluetooth Device ID</label>
+                            <input type="text" id="bluetoothId" placeholder="Enter Bluetooth unique ID">
+                        </div>
+                    </div>
+
+                    <!-- Admin Fields - Remove inline style -->
+                    <div id="adminFields" class="role-fields">
+                        <div class="form-group">
+                            <label for="adminId">Admin ID</label>
+                            <input type="text" id="adminId" placeholder="Enter admin ID">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Add User</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Face Capture Instruction Modal -->
+    <div class="modal-overlay" id="faceInstructionModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div>
+                    <h2>Face Registration Instructions</h2>
+                    <p class="text-light">Important guidelines for face capture</p>
+                </div>
+                <button class="close-btn" onclick="closeModal('faceInstructionModal')">×</button>
+            </div>
+            
+            <div class="instruction-content">
+                <div class="instruction-icon">
+                    <i class="fas fa-lightbulb"></i>
+                </div>
+                
+                <div class="instruction-list">
+                    <div class="instruction-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Ensure you have proper lighting - avoid shadows on your face</span>
+                    </div>
+                    <div class="instruction-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Face the camera directly with a neutral expression</span>
+                    </div>
+                    <div class="instruction-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Remove sunglasses, hats, or anything covering your face</span>
+                    </div>
+                    <div class="instruction-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Make sure your entire face is visible in the frame</span>
+                    </div>
+                    <div class="instruction-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Stay still while the camera captures your face</span>
+                    </div>
+                </div>
+                
+                <div class="instruction-buttons">
+                    <button class="btn btn-primary" onclick="proceedToFaceCapture()">
+                        I Understand, Continue
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Face Capture Modal -->
+    <div class="modal-overlay" id="faceCaptureModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div>
+                    <h2>Face Registration</h2>
+                    <p class="text-light">Capture face for attendance system</p>
+                </div>
+                <button class="close-btn" onclick="closeFaceCaptureModal()">×</button>
+            </div>
+            
+            <div class="face-capture-container">
+                <div class="camera-preview">
+                    <video id="video" width="100%" height="300" autoplay></video>
+                    <canvas id="canvas" style="display: none;"></canvas>
+                </div>
+                
+                <div class="capture-instructions">
+                    <p>Please position your face in the center of the frame and ensure good lighting.</p>
+                </div>
+                
+                <div class="capture-buttons">
+                    <button class="btn btn-primary" onclick="captureFace()">
+                        <i class="fas fa-camera"></i> Capture Face
+                    </button>
+                    <button class="btn" onclick="closeFaceCaptureModal()">
+                        Skip for Now
+                    </button>
+                </div>
+                
+                <div id="captureResult" style="display: none; text-align: center; margin-top: 15px;">
+                    <div style="color: green; font-weight: bold;">
+                        <i class="fas fa-check-circle"></i> Face captured successfully!
+                    </div>
+                    <img id="capturedImage" width="150" height="150" style="margin-top: 10px; border-radius: 5px;">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div class="modal-overlay" id="confirmationModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="confirmationTitle">Confirm Action</h2>
+                <button class="close-btn" onclick="closeModal('confirmationModal')">×</button>
+            </div>
+            <div class="modal-body">
+                <p id="confirmationMessage">Are you sure you want to perform this action?</p>
+            </div>
+            <div class="modal-buttons">
+                <button class="modal-btn cancel" onclick="closeModal('confirmationModal')">Cancel</button>
+                <button class="modal-btn save" id="confirmActionButton">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+        <div class="loading-spinner">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Processing your request...</p>
+        </div>
+    </div>
+
+    <script src="Js/admin_dashboard.js"></script>
+</body>
+</html>

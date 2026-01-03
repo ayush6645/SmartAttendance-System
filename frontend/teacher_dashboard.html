@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Smart Attendance</title>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Chart.js for Analytics -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="/css/teacher_dashboard.css">
+</head>
+<body>
+    <!-- Loading Spinner Overlay -->
+    <div id="loading-overlay" class="loading-overlay active">
+        <div class="spinner"></div>
+    </div>
+
+    <div class="dashboard-layout">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <i class="fas fa-user-check logo-icon"></i>
+                <span class="logo-text">Smart Attendance</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#" class="nav-link active" data-view="dashboard"><i class="fas fa-home"></i><span>Dashboard</span></a></li>
+                <li><a href="#" class="nav-link" data-view="timetable"><i class="fas fa-calendar-alt"></i><span>Full Timetable</span></a></li>
+                <li><a href="#" class="nav-link" data-view="attendance"><i class="fas fa-edit"></i><span>Attendance Manager</span></a></li>
+                <li><a href="#" class="nav-link" data-view="analytics"><i class="fas fa-chart-line"></i><span>Analytics</span></a></li>
+            </ul>
+            <div class="sidebar-footer">
+                <a href="#" class="nav-link"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a>
+            </div>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Top Header -->
+            <header class="main-header">
+                <h1 id="header-title">Dashboard</h1>
+                <div class="header-actions">
+                    <div class="search-bar">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Search for students...">
+                    </div>
+                    <div class="user-profile" id="userMenu">
+                        <span id="teacher-name-avatar">Dr. Johnson</span>
+                        <div class="avatar" id="userAvatar">SJ</div>
+                        <div class="dropdown-menu" id="userDropdown">
+                            <a href="#"><i class="fas fa-cog"></i> Settings</a>
+                            <a href="#"><i class="fas fa-life-ring"></i> Help</a>
+                            <a href="#"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Page Content Views -->
+            <div class="content-body">
+                <!-- View 1: Dashboard -->
+                <div class="view active" id="view-dashboard">
+                    <!-- "What's Next?" Hero Card -->
+                    <div class="hero-card">
+                        <div class="hero-text">
+                            <p>What's Next?</p>
+                            <h2 id="next-lecture-title">No more classes today.</h2>
+                            <span id="next-lecture-details">Take a well-deserved break!</span>
+                        </div>
+                        <div class="hero-countdown" id="live-lecture-countdown-container" style="display: none;">
+                            <p>Lecture ends in:</p>
+                            <span id="live-lecture-countdown">--:--</span>
+                            <span class="live-indicator">LIVE</span>
+                        </div>
+                    </div>
+
+                    <!-- Key Stat Cards -->
+                    <div class="stats-grid">
+                        <div class="stat-card"><div class="stat-icon students"><i class="fas fa-users"></i></div><div class="stat-info"><p>Live Class Size</p><h3 id="stat-live-students">--</h3></div></div>
+                        <div class="stat-card"><div class="stat-icon risk"><i class="fas fa-exclamation-triangle"></i></div><div class="stat-info"><p>At-Risk Students</p><h3 id="stat-at-risk">--</h3></div></div>
+                        <div class="stat-card"><div class="stat-icon absent"><i class="fas fa-user-times"></i></div><div class="stat-info"><p>Absent Today</p><h3 id="stat-absent">--</h3></div></div>
+                        <div class="stat-card"><div class="stat-icon attendance"><i class="fas fa-chart-pie"></i></div><div class="stat-info"><p>Avg. Attendance</p><h3>82%</h3></div></div>
+                    </div>
+
+                    <!-- Live Lecture Student List -->
+                    <div class="card" id="live-lecture-card">
+                        <div class="card-header">
+                            <h3>Live Student Roster</h3>
+                            <div class="student-list-filters" id="student-list-filters">
+                                <button class="filter-btn active" data-filter="all">All</button>
+                                <button class="filter-btn" data-filter="atRisk">At Risk</button>
+                                <button class="filter-btn" data-filter="absent">Absent</button>
+                            </div>
+                        </div>
+                        <div class="table-container" id="live-lecture-container">
+                            <p class="placeholder">No live lecture currently active.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- View 2: Timetable -->
+                <div class="view" id="view-timetable">
+                    <div class="card">
+                        <div class="card-header"><h3>Full Weekly Timetable</h3></div>
+                        <div class="timetable-grid" id="timetable-container">
+                             <p class="placeholder">Loading timetable...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- View 3: Attendance Manager -->
+                <div class="view" id="view-attendance">
+                     <div class="card">
+                        <div class="card-header"><h3>Attendance Editor</h3></div>
+                         <div class="filters edit-filters">
+                            <select id="edit-branch-filter" class="filter-select"><option value="">Select Branch</option></select>
+                            <select id="edit-year-filter" class="filter-select"><option value="">Select Year</option></select>
+                            <select id="edit-division-filter" class="filter-select"><option value="">Select Division</option></select>
+                            <input type="date" id="edit-start-date" class="filter-select">
+                            <input type="date" id="edit-end-date" class="filter-select">
+                            <button class="btn btn-primary" id="fetch-editable-attendance-btn"><i class="fas fa-search"></i> Load Data</button>
+                        </div>
+                        <div class="table-container" id="edit-table-container">
+                            <p class="placeholder">Select filters and a date range (max 7 days) to load student records.</p>
+                        </div>
+                         <div class="card-footer">
+                            <button class="btn btn-success" id="save-attendance-changes-btn" disabled><i class="fas fa-save"></i> Save Changes</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- View 4: Analytics -->
+                <div class="view" id="view-analytics">
+                    <div class="analytics-grid">
+                        <div class="card">
+                             <div class="card-header"><h3>Weekly Attendance Trend</h3></div>
+                             <div class="filters">
+                                <select id="trend-branch-filter" class="filter-select"><option value="">Select Branch</option></select>
+                                <select id="trend-year-filter" class="filter-select"><option value="">Select Year</option></select>
+                                <select id="trend-division-filter" class="filter-select"><option value="">Select Division</option></select>
+                            </div>
+                             <div class="chart-container"><canvas id="weeklyTrendChart"></canvas></div>
+                        </div>
+                         <div class="card">
+                             <div class="card-header"><h3>Branch Performance Comparison (%)</h3></div>
+                             <div class="chart-container"><canvas id="branchComparisonChart"></canvas></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Generic Alert Modal -->
+    <div id="alert-modal" class="modal">
+        <div class="modal-content">
+             <div class="modal-header">
+                <h2 id="alert-modal-title">Notification</h2>
+                <span class="close-btn" id="close-alert-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p id="alert-modal-message"></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/teacher_dashboard.js"></script>
+</body>
+</html>

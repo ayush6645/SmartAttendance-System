@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Attendance System - Login</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4A90E2;
+            --error-color: #D0021B;
+            --success-color: #4CAF50;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #ffffff;
+            display: flex;
+            justify-content: center;
+            padding-top: 60px;
+            padding-bottom: 60px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .header {
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            background-color: #3f51b5;
+            border-radius: 50%;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .logo i {
+            color: #ffffff;
+            font-size: 24px;
+        }
+
+        .header h1 {
+            font-size: 26px;
+            font-weight: 500;
+            color: #212121;
+        }
+
+        .header p {
+            font-size: 15px;
+            color: #757575;
+        }
+
+        .login-box {
+            background-color: #ffffff;
+            padding: 35px;
+            border-radius: 6px;
+            border: 1px solid #e0e0e0;
+            text-align: left;
+        }
+
+        .login-box h2 {
+            font-size: 22px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #212121;
+            text-align: center;
+        }
+
+        .login-box .subheading {
+            font-size: 14px;
+            color: #757575;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .input-group {
+            margin-bottom: 18px;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #424242;
+            margin-bottom: 6px;
+        }
+
+        .input-field-container {
+            position: relative;
+        }
+
+        .input-field-container i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #bdbdbd;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 10px 15px 10px 40px;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            font-size: 15px;
+            background-color: #f5f5f5;
+        }
+
+        .sign-in-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #1e2a5c;
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .sign-in-btn:hover {
+            background-color: #2a3b7b;
+        }
+
+        #error-message {
+            color: var(--error-color);
+            text-align: center;
+            margin-top: 15px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            min-height: 1.2em; /* Reserve space to prevent layout shift */
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .modal-title {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #1e2a5c;
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .modal-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .modal-btn-primary {
+            background-color: #1e2a5c;
+            color: white;
+        }
+
+        .modal-btn-secondary {
+            background-color: #e0e0e0;
+            color: #424242;
+        }
+        
+        .password-strength {
+            margin-top: 5px;
+            font-size: 12px;
+        }
+        
+        .strength-weak {
+            color: var(--error-color);
+        }
+        
+        .strength-medium {
+            color: orange;
+        }
+        
+        .strength-strong {
+            color: var(--success-color);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <div class="logo"><i class="fas fa-graduation-cap"></i></div>
+            <h1>Smart Attendance</h1>
+            <p>Automated Face Recognition System</p>
+        </div>
+        <div class="login-box">
+            <h2>Sign In</h2>
+            <p class="subheading">Enter your credentials to access your dashboard</p>
+            <form id="login-form">
+                <div class="input-group">
+                    <label for="email">Email</label>
+                    <div class="input-field-container">
+                        <input type="email" id="email" placeholder="Enter your email" required>
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label for="password">Password</label>
+                    <div class="input-field-container">
+                        <input type="password" id="password" placeholder="Enter your password" required>
+                        <i class="fas fa-lock"></i>
+                    </div>
+                </div>
+                <button type="submit" class="sign-in-btn" id="submit-btn">
+                    <span id="btn-text">Sign In</span>
+                    <span id="btn-loading" class="loading" style="display: none;"></span>
+                </button>
+                <div id="error-message"></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Password Setup Modal -->
+    <div id="password-setup-modal" class="modal">
+        <div class="modal-content">
+            <h2 class="modal-title">Set Your Password</h2>
+            <p style="text-align: center; margin-bottom: 20px; color: #757575;">
+                As a student, you need to set a new password for your account.
+            </p>
+            <div class="input-group">
+                <label for="new-password">New Password</label>
+                <div class="input-field-container">
+                    <input type="password" id="new-password" placeholder="Enter new password" required>
+                    <i class="fas fa-lock"></i>
+                </div>
+                <div id="password-strength" class="password-strength"></div>
+            </div>
+            <div class="input-group">
+                <label for="confirm-password">Confirm Password</label>
+                <div class="input-field-container">
+                    <input type="password" id="confirm-password" placeholder="Confirm new password" required>
+                    <i class="fas fa-lock"></i>
+                </div>
+            </div>
+            <div id="password-error" style="color: var(--error-color); text-align: center; margin-top: 10px;"></div>
+            <div class="modal-buttons">
+                <button type="button" class="modal-btn modal-btn-secondary" id="cancel-password-btn">Cancel</button>
+                <button type="button" class="modal-btn modal-btn-primary" id="save-password-btn">Save Password</button>
+            </div>
+        </div>
+    </div>
+<script>
+        // --- GET DOM ELEMENTS ---
+        const loginForm = document.getElementById('login-form');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const errorMessage = document.getElementById('error-message');
+        const submitBtn = document.getElementById('submit-btn');
+        const btnText = document.getElementById('btn-text');
+        const btnLoading = document.getElementById('btn-loading');
+        
+        // --- MODAL ELEMENTS ---
+        const passwordModal = document.getElementById('password-setup-modal');
+        const newPasswordInput = document.getElementById('new-password');
+        const confirmPasswordInput = document.getElementById('confirm-password');
+        const passwordError = document.getElementById('password-error');
+        const passwordStrength = document.getElementById('password-strength');
+        const savePasswordBtn = document.getElementById('save-password-btn');
+        const cancelPasswordBtn = document.getElementById('cancel-password-btn');
+        
+        let currentUserForPasswordUpdate = null;
+
+        // --- LOGIN FORM SUBMISSION ---
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            errorMessage.textContent = '';
+            
+            // Show loading state
+            setLoading(true);
+
+            try {
+                // Send login request to our backend API
+                const response = await fetch('/api/login', { // Using relative path
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        email: emailInput.value, 
+                        password: passwordInput.value 
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    // --- THIS IS THE KEY LOGIC CHANGE ---
+                    // Check if the server requires a password update
+                    if (data.password_update_required) {
+                        // Store the user info and show the "Create Password" modal
+                        currentUserForPasswordUpdate = data.user;
+                        showPasswordSetupModal();
+                    } else {
+                        // Normal login: Store user data and redirect
+                        sessionStorage.setItem('user', JSON.stringify(data.user));
+                        redirectUser(data.user.role);
+                    }
+                } else {
+                    errorMessage.textContent = data.message;
+                }
+            } catch (error) {
+                console.error('Login Error:', error);
+                errorMessage.textContent = 'A network error occurred. Please try again.';
+            } finally {
+                setLoading(false);
+            }
+        });
+
+        // --- PASSWORD SETUP MODAL LOGIC ---
+
+        function showPasswordSetupModal() {
+            passwordModal.style.display = 'flex';
+            // Clear previous form state
+            newPasswordInput.value = '';
+            confirmPasswordInput.value = '';
+            passwordError.textContent = '';
+            passwordStrength.textContent = '';
+        }
+
+        function hidePasswordSetupModal() {
+            passwordModal.style.display = 'none';
+        }
+
+        savePasswordBtn.addEventListener('click', async () => {
+            const newPassword = newPasswordInput.value;
+            const confirmPassword = confirmPasswordInput.value;
+            
+            // --- VALIDATION ---
+            if (newPassword !== confirmPassword) {
+                passwordError.textContent = 'Passwords do not match.';
+                return;
+            }
+            if (newPassword.length < 6) {
+                passwordError.textContent = 'Password must be at least 6 characters long.';
+                return;
+            }
+            passwordError.textContent = '';
+            
+            // --- API CALL ---
+            setModalLoading(true);
+            try {
+                const response = await fetch('/api/update-password', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        uid: currentUserForPasswordUpdate.uid,
+                        new_password: newPassword
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    // Password updated successfully, now store user and redirect
+                    sessionStorage.setItem('user', JSON.stringify(currentUserForPasswordUpdate));
+                    hidePasswordSetupModal();
+                    redirectUser(currentUserForPasswordUpdate.role);
+                } else {
+                    passwordError.textContent = data.message || 'Failed to update password.';
+                }
+            } catch (error) {
+                console.error('Password update error:', error);
+                passwordError.textContent = 'A network error occurred. Please try again.';
+            } finally {
+                setModalLoading(false);
+            }
+        });
+
+        cancelPasswordBtn.addEventListener('click', hidePasswordSetupModal);
+        newPasswordInput.addEventListener('input', checkPasswordStrength);
+
+        // --- HELPER FUNCTIONS ---
+
+        function redirectUser(role) {
+            const roleToDashboard = {
+                'Admin': 'admin_dashboard.html',
+                'Teacher': 'teacher_dashboard.html',
+                'Student': 'student_dashboard.html'
+            };
+
+            const destination = roleToDashboard[role];
+            if (destination) {
+                window.location.href = destination;
+            } else {
+                errorMessage.textContent = 'Could not determine user role for redirection.';
+            }
+        }
+
+        function setLoading(isLoading) {
+            submitBtn.disabled = isLoading;
+            btnText.style.display = isLoading ? 'none' : 'inline-block';
+            btnLoading.style.display = isLoading ? 'inline-block' : 'none';
+        }
+        
+        function setModalLoading(isLoading) {
+            savePasswordBtn.disabled = isLoading;
+            savePasswordBtn.innerHTML = isLoading ? '<span class="loading"></span> Updating...' : 'Save Password';
+        }
+
+        function checkPasswordStrength() {
+            const password = newPasswordInput.value;
+            let strengthText = '';
+            let strengthClass = '';
+            const criteria = {
+                length: password.length >= 8,
+                upper: /[A-Z]/.test(password),
+                lower: /[a-z]/.test(password),
+                number: /\d/.test(password),
+                special: /[!@#$%^&*()]/.test(password)
+            };
+            const score = Object.values(criteria).filter(Boolean).length;
+            
+            if (password.length > 0) {
+                switch (score) {
+                    case 1:
+                    case 2:
+                        strengthText = 'Weak';
+                        strengthClass = 'strength-weak';
+                        break;
+                    case 3:
+                    case 4:
+                        strengthText = 'Medium';
+                        strengthClass = 'strength-medium';
+                        break;
+                    case 5:
+                        strengthText = 'Strong';
+                        strengthClass = 'strength-strong';
+                        break;
+                    default:
+                        strengthText = 'Too short';
+                        strengthClass = 'strength-weak';
+                }
+            }
+            
+            passwordStrength.textContent = strengthText ? `Strength: ${strengthText}` : '';
+            passwordStrength.className = `password-strength ${strengthClass}`;
+        }
+    </script>
+</body>
+</html>
+</body>
+</html>
