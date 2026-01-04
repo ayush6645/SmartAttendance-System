@@ -59,16 +59,22 @@ Built with a **Flask** backend and wrapped in **PyWebview** for a native desktop
 ---
 
 
-### 🔑 Default Credentials (First-Time Login)
-The system supports specific domains for first-time authentication.
-*   **Student Login**:
-    *   **Email**: `anyname@student.edu.in` (Must exist in database)
-    *   **Default Password**: `student123`
-*   **Faculty (Teacher) Login**:
-    *   **Email**: `anyname@teacher.edu.in` (Must exist in database)
+### 🔑 Login Credentials (Demo Accounts)
+
+*   **👨‍💼 Admin Login (Super User)**:
+    *   **Email**: `admin@college.edu`
+    *   **Password**: `admin123`
+    *   ** Capabilities**: Can **register new Students**, **Teachers**, and **add more Admins**.
+
+*   **🎓 Student Login (Sample)**:
+    *   **Email**: `gyan.gupta@student.edu.in`
+    *   **Password**: `ayush123`
+
+*   **👨‍🏫 Faculty (Teacher) Login**:
+    *   **Email**: `anyname@teacher.edu.in` (Must be manually registered by Admin first)
     *   **Default Password**: `teacher123`
 
-> **Note**: Upon first login with these credentials, the system will force you to set a new, secure password.
+> **Note**: The Admin account has full privileges to manage the entire system, including creating new users and assigning roles.
 
 ---
 
