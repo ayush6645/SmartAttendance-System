@@ -4,7 +4,6 @@ __pycache__/
 *.pyc
 build/
 dist/
-*.spec
 .venv/
 attendance_system.egg-info/
 .idea/
