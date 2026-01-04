@@ -59,6 +59,19 @@ Built with a **Flask** backend and wrapped in **PyWebview** for a native desktop
 ---
 
 
+### 🔑 Default Credentials (First-Time Login)
+The system supports specific domains for first-time authentication.
+*   **Student Login**:
+    *   **Email**: `anyname@student.edu.in` (Must exist in database)
+    *   **Default Password**: `student123`
+*   **Faculty (Teacher) Login**:
+    *   **Email**: `anyname@teacher.edu.in` (Must exist in database)
+    *   **Default Password**: `teacher123`
+
+> **Note**: Upon first login with these credentials, the system will force you to set a new, secure password.
+
+---
+
 ## 🚀 Quick Start (For Users)
 > **No Python or Code Installation Required!**
 
