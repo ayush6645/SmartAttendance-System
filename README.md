@@ -58,12 +58,23 @@ Built with a **Flask** backend and wrapped in **PyWebview** for a native desktop
 
 ---
 
-## 🚀 Installation & Setup
+
+## 🚀 Quick Start (For Users)
+> **No Python or Code Installation Required!**
+
+1.  **Download**: Go to the **[Releases](https://github.com/ayush6645/SmartAttendance-System/releases)** section.
+2.  **Get the App**: Download the latest `SmartAttendance.exe`.
+3.  **Run**: Double-click the file to start the application immediately. 
+    *   *Note: First launch might take a few seconds to initialize.*
+
+---
+
+## 👨‍💻 Developer Setup (Source Code)
+Follow these steps ONLY if you want to modify the code or build it yourself.
 
 ### Prerequisites
 1.  Python 3.10 or higher.
 2.  C++ Build Tools (required for compiling `dlib` on Windows).
-    *   *Tip: Install Visual Studio Community with "Desktop development with C++".*
 
 ### 1. Clone the Repository
 ```bash
@@ -89,32 +100,21 @@ pip install -r requirements.txt
 1.  Go to your Firebase Console.
 2.  Generate a new Private Key for your Service Account.
 3.  Download the JSON file and rename it to `serviceAccountKey.json`.
-4.  Place it in the root directory of the project.
+4.  Place it in the root directory.
 
-### 5. Run the Application
+### 5. Run Locally
 ```bash
 python run_desktop.py
 ```
 
----
-
-## 📦 Building the Executable
-
-To distribute this application as a standalone `.exe` without requiring Python installation on client machines:
-
-1.  **Clean Previous Builds**:
-    ```bash
-    rmdir /s /q build dist
-    ```
-
-2.  **Run the Build Script**:
-    I have included a custom build script that handles hidden imports and recursion limits automatically.
-    ```bash
-    python build_exe.py
-    ```
-
-3.  **Locate the Output**:
-    The final executable will be located in `dist/SmartAttendance.exe`.
+### 6. Build Executable (Optional)
+To package your modified code into a new `.exe`:
+```bash
+# Clean old builds
+rmdir /s /q build dist
+# Run build script
+python build_exe.py
+```
 
 ---
 
